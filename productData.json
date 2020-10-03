@@ -1,0 +1,41 @@
+[
+  {
+    "features": {
+      "Страна": "США",
+      "Бренд": "Jack Daniels",
+      "Тип": "Теннесси",
+      "Выдержка": 4,
+      "Крепость": 40
+    },
+    "images": {
+      "default": "https://static.winestreet.ru/off-line/goods_file/31946/file_S.png"
+    },
+    "description": "",
+    "section": "Виски",
+    "id": "2096957",
+    "name": "Виски Jack Daniels",
+    "links": [
+      "https://winestreet.ru/wiskey/jack-daniels/5099873046050.html",
+      "https://winestreet.ru/wiskey/jack-daniels/goods_4951-jack-daniels-7-tennessee-v-podarochno-upakovke-iz-metallichesko-setki-s-2-stakanami.html",
+      "https://winestreet.ru/wiskey/jack-daniels/asto27307.html",
+      "https://winestreet.ru/wiskey/jack-daniels/5099873046081.html",
+      "https://winestreet.ru/wiskey/jack-daniels/asto27311.html",
+      "https://winestreet.ru/wiskey/jack-daniels/5099873089798.html",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-on-cradle-3-l/",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-0-7-l/",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-0-375-l/",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-metal-box-with-2-glasses-0-7-l/",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-375-ml/",
+      "https://alcomarket.ru/catalog/krepkiy-alkogol/viski/jack-daniels-1-l/",
+      "https://decanter.ru/product/jack-daniels-no-7-tennessee-id5825",
+      "https://decanter.ru/product/jack-daniels-no-7-tennessee-id2074",
+      "https://decanter.ru/product/jack-daniels-no-7-tennessee-id2072",
+      "https://decanter.ru/product/jack-daniels-no-7-tennessee-id2071",
+      "https://winestyle.ru/products/Jack-Daniels-700.html",
+      "https://winestyle.ru/products/Jack-Daniels-BOX-3000.html",
+      "https://winestyle.ru/products/Jack-Daniels-1000.html",
+      "https://winestyle.ru/products/Jack-Daniels-500.html",
+      "https://winestyle.ru/products/Jack-Daniels.html"
+    ]
+  }
+]
