@@ -19,35 +19,36 @@ import numpy as np
 # products = [i for i in whiskey if 'identified' in i.keys()]
 # print(len(products))
 
-with open('whiskey.json') as f:
-    whiskey = f.read()
-    whiskey = json.loads(whiskey)
-    f.close()
+# with open('whiskey.json') as f:
+#     whiskey = f.read()
+#     whiskey = json.loads(whiskey)
+#     f.close()
+#
+#
+# for i in whiskey:
+#
+#     i['identified'] = False
+#     if 'product_id' in i.keys():
+#         i.pop('product_id')
+#     if 'in_productData' in i.keys():
+#         i.pop('in_productData')
+#
+#     whiskey[whiskey.index(i)] = i
+#
+# with open('whiskey.json', 'w') as f:
+#     json.dump(whiskey, f, ensure_ascii=False, indent=2)
 
 
-for i in whiskey:
-
-    i['identified'] = False
-    if 'product_id' in i.keys():
-        i.pop('product_id')
-    if 'in_productData' in i.keys():
-        i.pop('in_productData')
-
-    whiskey[whiskey.index(i)] = i
-
-with open('whiskey.json', 'w') as f:
-    json.dump(whiskey, f, ensure_ascii=False, indent=2)
-
-with open('productData.json') as f:
-    products = f.read()
-    products = json.loads(products)
-    f.close()
-
-products.clear()
-
-with open('productData.json', 'w') as f:
-    json.dump(products, f, ensure_ascii=False, indent=2)
-    f.close()
+# with open('productData.json') as f:
+#     products = f.read()
+#     products = json.loads(products)
+#     f.close()
+#
+# products.clear()
+#
+# with open('productData.json', 'w') as f:
+#     json.dump(products, f, ensure_ascii=False, indent=2)
+#     f.close()
 
 
 # result_list = result_list + my_list
@@ -73,45 +74,20 @@ with open('productData.json', 'w') as f:
 
 # for group in groups:
 #     print(group)
-a = [{
-    "_id": "ca99b96421b0e1a6b06d849b2227afb47a2ea947",
-    "features": {
-      "Артикул:": " ASTO27284",
-      "Объем:": "0.7 л",
-      "Тип:": "Виски",
-      "Крепость:": "35%",
-      "Тип виски:": "Теннесси",
-      "Сырье:": "Кукуруза, Рожь, Ячмень",
-      "Бренд:": "Jack Daniels",
-      "Страна:": "США",
-      "Поставщик:": "АСТ, WineStreet, ВАЙНС",
-      "Срок годности:": " не ограничен при соблюдении условий хранения"
-    },
-    "image": [
-      "https://static.winestreet.ru/off-line/goods_file/18153/file_S.jpg"
-    ],
-    "link": [
-      "https://winestreet.ru/wiskey/jack-daniels/asto27284.html"
-    ],
-    "name": [
-      "Виски американский «Jack Daniels Tennessee Honey», 0.7 л"
-    ],
-    "price": [
-      "2 303",
-      "2 233"
-    ],
-    "section": [
-      "Виски"
-    ],
-    "spider": [
-      "winestreet"
-    ],
-    "status": "New",
-    "identified": True,
-    "product_id": "4194243"
-  }
-]
 
+# a = ['https://winestreet.ru/wiskey/jack-daniels/5099873046050.html', 'https://winestreet.ru/wiskey/jack-daniels/5099873046050.html', 'https://winestreet.ru/wiskey/jack-daniels/5099873046050.html']
+
+# with open('link_list.json', 'w') as f:
+#     json.dump([], f, ensure_ascii=False, indent=2)
+
+# with open('test_file.json') as f:
+#     test = f.read()
+#     test = json.loads(test)
+#     f.close()
+#
+# for i in test:
+#     if i.isdigit():
+#         print(i)
 
 
 # a[0]['identified'] = False

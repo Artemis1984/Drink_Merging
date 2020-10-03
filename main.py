@@ -111,7 +111,7 @@ def finished_whiskey():
     return render_template('finished_whiskey.html', groups=show_group, titles=group_titles)
 
 
-del_list = []
+# del_list = []
 
 
 @app.route('/naming_whiskey', methods=['GET', 'POST'])
@@ -138,6 +138,10 @@ def naming_whiskey():
             whiskey = f.read()
             whiskey = json.loads(whiskey)
             f.close()
+        with open('del_list.json') as f:
+            del_list = f.read()
+            del_list = json.loads(del_list)
+            f.close()
         for i in del_list:
             # print(i)
             del_product = [k for k in whiskey if k['link'][0] == i]
@@ -145,11 +149,16 @@ def naming_whiskey():
                 del_product[0]['identified'] = False
                 del_product[0].pop('product_id')
                 whiskey[whiskey.index([n for n in whiskey if n['link'][0] == i][0])] = del_product[0]
+                print(whiskey[whiskey.index([n for n in whiskey if n['link'][0] == i][0])])
 
-        del_list.clear()
 
         with open('whiskey.json', 'w') as f:
             json.dump(whiskey, f, ensure_ascii=False, indent=2)
+            f.close()
+
+        # del_list.clear()
+        with open('del_list.json', 'w') as f:
+            json.dump([], f, ensure_ascii=False, indent=2)
             f.close()
 
         product_dict = dict()
@@ -202,10 +211,19 @@ def naming_whiskey():
 
     if 'delete_from_group' in request.form:
         del_link = request.form['delete_from_group']
+        with open('del_list.json') as f:
+            del_list = f.read()
+            del_list = json.loads(del_list)
+            f.close()
+
         if not (del_link in del_list):
             del_list.append(del_link)
         else:
             del_list.remove(del_link)
+
+        with open('del_list.json', 'w') as f:
+            json.dump(del_list, f, ensure_ascii=False, indent=2)
+            f.close()
 
         print('delete list', del_list)
 
@@ -217,7 +235,12 @@ def naming_whiskey():
                     break
                 else:
                     show_group = [groups[-1]]
-        del_list.clear()
+
+        with open('del_list.json', 'w') as f:
+            json.dump([], f, ensure_ascii=False, indent=2)
+            f.close()
+
+        # del_list.clear()
 
     if 'previous' in request.form:
         for i in groups:
@@ -225,12 +248,16 @@ def naming_whiskey():
                 if groups.index(i) != 0:
                     show_group = [groups[groups.index(i) - 1]]
                     break
-        del_list.clear()
+
+        with open('del_list.json', 'w') as f:
+            json.dump([], f, ensure_ascii=False, indent=2)
+            f.close()
+        # del_list.clear()
 
     return render_template('naming_whiskey.html', groups=show_group)
 
 
-link_list = list()
+# link_list = list()
 skip_list = []
 
 
@@ -243,6 +270,7 @@ def grouping_whiskey():
         whiskey = f.read()
         whiskey = json.loads(whiskey)
         f.close()
+
 
     main_drink = [i for i in whiskey if i['identified'] is False and not (i['link'][0] in skip_list)]
     if main_drink:
@@ -258,20 +286,50 @@ def grouping_whiskey():
 
     if "index" in request.form:
         link = request.form['index']
+
+        # тестирование
+        with open('link_list.json') as f:
+            link_list = f.read()
+            link_list = json.loads(link_list)
+            f.close()
+            print(link_list, 'in index')
+
+
+
         if link in link_list:
             link_list.remove(link)
         else:
             link_list.append(link)
 
+        with open('link_list.json', 'w') as f:
+            json.dump(link_list, f, ensure_ascii=False, indent=2)
+            f.close()
+
     if 'add_to_group' in request.form:
         article = request.form['add_to_group']
+        with open('link_list.json') as f:
+            link_list = f.read()
+            link_list = json.loads(link_list)
+            f.close()
+        print(link_list, 'add group')
         if article in link_list:
             link_list.remove(article)
         else:
             link_list.append(article)
 
+        with open('link_list.json', 'w') as f:
+            json.dump(link_list, f, ensure_ascii=False, indent=2)
+            f.close()
+        print(link_list, 'add to group')
+
     if 'skip' in request.form:
-        link_list.clear()
+
+        with open('link_list.json', 'w') as f:
+            json.dump([], f, ensure_ascii=False, indent=2)
+            f.close()
+
+        # link_list.clear()
+
         if not (request.form['skip'] in skip_list):
             skip_list.append(request.form['skip'])
 
@@ -291,44 +349,75 @@ def grouping_whiskey():
 
     if 'saving' in request.form:
 
+        with open('link_list.json') as f:
+            link_list = f.read()
+            link_list = json.loads(link_list)
+            f.close()
+            print(link_list, 'in saving')
+
         match = [i for i in link_list if i.isdigit()]
 
         if len(match) > 1:
             flash('Ошибка: Вы можете добавить напиток только в одну группу')
-            link_list.clear()
+            with open('link_list.json', 'w') as f:
+                json.dump([], f, ensure_ascii=False, indent=2)
+                f.close()
+            # link_list.clear()
             return redirect('/grouping_whiskey')
             # return redirect('/test')
 
         elif len(match) == 1:
+
+            with open('link_list.json') as f:
+                link_list = f.read()
+                link_list = json.loads(link_list)
+                f.close()
+
             link_list.remove(match[0])
             if main_drink:
                 link_list.append(main_drink['link'][0])
 
+            with open('link_list.json', 'w') as f:
+                json.dump(link_list, f, ensure_ascii=False, indent=2)
+                f.close()
+
             product_id = match[0]
 
-            with open('whiskey.json', 'w') as f:
+            # with open('whiskey.json', 'w') as f:
 
-                for i in link_list:
-                    drink = [k for k in whiskey if k['link'][0] == i][0]
-                    ind = whiskey.index(drink)
-                    drink['identified'] = True
-                    drink['product_id'] = product_id
-                    whiskey[ind] = drink
-                if whiskey:
+            with open('link_list.json') as f:
+                link_list = f.read()
+                link_list = json.loads(link_list)
+                f.close()
+
+            for i in link_list:
+                drink = [k for k in whiskey if k['link'][0] == i][0]
+                ind = whiskey.index(drink)
+                drink['identified'] = True
+                drink['product_id'] = product_id
+                whiskey[ind] = drink
+            if whiskey:
+                with open('whiskey.json', 'w') as f:
                     json.dump(whiskey, f, ensure_ascii=False, indent=2)
                     f.close()
 
-                main_drink = [i for i in whiskey if i['identified'] is False and not (i['link'][0] in skip_list)]
-                if main_drink:
-                    main_drink = main_drink[0]
-                else:
-                    if skip_list:
-                        del skip_list[0]
-                        main_drink = [i for i in whiskey if
-                                      i['identified'] is False and not (i['link'][0] in skip_list)]
-                        if main_drink:
-                            main_drink = main_drink[0]
+            main_drink = [i for i in whiskey if i['identified'] is False and not (i['link'][0] in skip_list)]
+            if main_drink:
+                main_drink = main_drink[0]
+            else:
+                if skip_list:
+                    del skip_list[0]
+                    main_drink = [i for i in whiskey if
+                                    i['identified'] is False and not (i['link'][0] in skip_list)]
+                    if main_drink:
+                        main_drink = main_drink[0]
 
+            with open('productData.json') as f:
+
+                with open('link_list.json') as f:
+                    link_list = f.read()
+                    link_list = json.loads(link_list)
+                    f.close()
             with open('productData.json') as f:
                 productData = f.read()
                 productData = json.loads(productData)
@@ -359,12 +448,25 @@ def grouping_whiskey():
                     json.dump(whiskey, f, ensure_ascii=False, indent=2)
                     f.close()
 
-            link_list.clear()
+            # link_list.clear()
+
+
+            with open('link_list.json', 'w') as f:
+                json.dump([], f, ensure_ascii=False, indent=2)
+                f.close()
 
             return redirect('/whiskey_grouping_prove')
         else:
             if main_drink:
+                with open('link_list.json', 'w') as f:
+                    json.dump([], f, ensure_ascii=False, indent=2)
+                    f.close()
+
                 link_list.append(main_drink['link'][0])
+
+                with open('link_list.json', 'w') as f:
+                    json.dump(link_list, f, ensure_ascii=False, indent=2)
+                    f.close()
 
                 with open('articles.txt', 'r') as f:
                     doc = f.read()
@@ -372,7 +474,10 @@ def grouping_whiskey():
                     del num[-1]
                     product_id = num[-1]
 
-            with open('whiskey.json', 'w') as f:
+
+                with open('link_list.json', 'w') as f:
+                    json.dump([], f, ensure_ascii=False, indent=2)
+                    f.close()
 
                 for i in link_list:
                     drink = [k for k in whiskey if k['link'][0] == i][0]
@@ -380,10 +485,17 @@ def grouping_whiskey():
                     drink['identified'] = True
                     drink['product_id'] = product_id
                     whiskey[ind] = drink
-                json.dump(whiskey, f, ensure_ascii=False, indent=2)
-                f.close()
 
-                link_list.clear()
+
+                with open('whiskey.json', 'w') as f:
+                    json.dump(whiskey, f, ensure_ascii=False, indent=2)
+                    f.close()
+
+                # link_list.clear()
+
+                with open('link_list.json', 'w') as f:
+                    json.dump([], f, ensure_ascii=False, indent=2)
+                    f.close()
 
                 main_drink = [i for i in whiskey if i['identified'] is False and not (i['link'][0] in skip_list)]
                 if main_drink:

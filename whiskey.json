@@ -34,7 +34,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": true,
+    "product_id": "8388379"
   },
   {
     "_id": "3b548bb5e461d42a5fdacc26d699c4bd7f92e053",
