@@ -19,10 +19,14 @@ import numpy as np
 # products = [i for i in whiskey if 'identified' in i.keys()]
 # print(len(products))
 
-# with open('whiskey.json') as f:
-#     whiskey = f.read()
-#     whiskey = json.loads(whiskey)
-#     f.close()
+with open('whiskey.json') as f:
+    whiskey = f.read()
+    whiskey = json.loads(whiskey)
+    f.close()
+
+with open('whiskey.json', 'w') as f:
+    json.dump(whiskey[:5], f, ensure_ascii=False, indent=2)
+    f.close()
 #
 #
 # for i in whiskey:
