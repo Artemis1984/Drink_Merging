@@ -6,10 +6,21 @@
 
 {% block products %}
 <div align="center">
+
 <form action="/grouping_whiskey">
-    <button class="btn btn-success" style="width:150px; font-size:20px"> Виски
-<!--        <a style="font-size:30px;" class="p-2 text-dark" href="/grouping_whiskey"></a>-->
+    <button class="btn btn-success" style="width:150px; font-size:22px"> Виски
     </button>
-  </form>
+</form>
+
+<form action="/grouping_vodka" style="margin-top:30px">
+    <button class="btn btn-danger" style="width:150px; font-size:22px"> Водка
+    </button>
+</form>
+
+<form action="/grouping_cognac" style="margin-top:30px">
+    <button class="btn btn-warning" style="width:150px; font-size:22px; color:white; background: orange"> Коньяк
+    </button>
+</form>
+
 </div>
 {% endblock %}
