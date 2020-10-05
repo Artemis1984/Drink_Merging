@@ -35,7 +35,7 @@
     ],
     "status": "New",
     "identified": true,
-    "product_id": "8388379"
+    "product_id": "4194070"
   },
   {
     "_id": "3b548bb5e461d42a5fdacc26d699c4bd7f92e053",
@@ -72,7 +72,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": false,
+    "in_productData": true
   },
   {
     "_id": "bdbbbe01ad9d19fd89339023485644eb436f69c4",
@@ -4256,7 +4257,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": false,
+    "in_productData": true
   },
   {
     "_id": "ca99b96421b0e1a6b06d849b2227afb47a2ea947",
@@ -7721,7 +7723,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": true,
+    "product_id": "4194070"
   },
   {
     "_id": "6b37fc70e1b73f90c2fcd4e0612c07e809549911",
@@ -7758,7 +7761,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": true,
+    "product_id": "4194070"
   },
   {
     "_id": "0384f2fea49481e3d0e0f18fd710b01031c89347",
@@ -7795,7 +7799,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": true,
+    "product_id": "4194070"
   },
   {
     "_id": "fac389652d0f4273c690f22d865be9eee0dfb486",
@@ -7832,7 +7837,8 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": false
+    "identified": true,
+    "product_id": "4194070"
   },
   {
     "_id": "4060a6cbadf3647f844f018558e233eaeb0cc26f",
