@@ -35,6 +35,7 @@ def finished_cognac():
     cognac = read_file('cognac.json')
 
     merged_cognac = read_file('productData.json')
+    merged_cognac = [i for i in merged_cognac if i['section'] == 'Коньяк']
 
     productData_links = [i['links'] for i in merged_cognac]
     productData_groups = [i for i in merged_cognac]
@@ -111,10 +112,11 @@ def finished_vodka():
 
     vodka = read_file('vodka.json')
 
-    merged_whiskey = read_file('productData.json')
+    merged_vodka = read_file('productData.json')
+    merged_vodka = [i for i in merged_vodka if i['section'] == 'Водка']
 
-    productData_links = [i['links'] for i in merged_whiskey]
-    productData_groups = [i for i in merged_whiskey]
+    productData_links = [i['links'] for i in merged_vodka]
+    productData_groups = [i for i in merged_vodka]
 
     if productData_links:
         show_group = productData_links[0]
@@ -189,6 +191,7 @@ def finished_whiskey():
     whiskey = read_file('whiskey.json')
 
     merged_whiskey = read_file('productData.json')
+    merged_whiskey = [i for i in merged_whiskey if i['section'] == 'Виски']
 
     productData_links = [i['links'] for i in merged_whiskey]
     productData_groups = [i for i in merged_whiskey]
@@ -414,7 +417,7 @@ def naming_vodka():
             # product_dict['features']['Выдержка'] = int(exposure)
             product_dict['images'] = {}
             product_dict['description'] = ''
-            product_dict['section'] = 'Виски'
+            product_dict['section'] = 'Водка'
             product_dict['id'] = request.form['group_id']
             product_dict['name'] = request.form['title']
             product_dict['features']['Страна'] = request.form['country']

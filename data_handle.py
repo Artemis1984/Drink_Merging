@@ -4,7 +4,17 @@ from itertools import groupby
 from pprint import pprint
 import re
 import numpy as np
+import os
 
+
+# answer = list(os.popen('heroku ps:copy productData.json'))
+# print(answer)
+# os.rename('productData_.json', 'productData.json')
+
+os.system('git add .')
+os.system('git commit -am "optimised"')
+answer = list(os.popen('git push heroku master'))
+print(answer)
 
 # with open('whiskey.json') as f:
 #     whiskey = f.read()
@@ -19,14 +29,14 @@ import numpy as np
 # products = [i for i in whiskey if 'identified' in i.keys()]
 # print(len(products))
 
-with open('whiskey.json') as f:
-    whiskey = f.read()
-    whiskey = json.loads(whiskey)
-    f.close()
-
-with open('whiskey.json', 'w') as f:
-    json.dump(whiskey[:5], f, ensure_ascii=False, indent=2)
-    f.close()
+# with open('whiskey.json') as f:
+#     whiskey = f.read()
+#     whiskey = json.loads(whiskey)
+#     f.close()
+#
+# with open('whiskey.json', 'w') as f:
+#     json.dump(whiskey[:5], f, ensure_ascii=False, indent=2)
+#     f.close()
 #
 #
 # for i in whiskey:
