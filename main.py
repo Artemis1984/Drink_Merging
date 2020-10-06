@@ -100,7 +100,7 @@ def finished_cognac():
         write_file('cognac.json', cognac)
 
         flash('Группа успешно отправлена на повторную обработку')
-        return redirect('/cognac_grouping_prove')
+        return redirect('/finished_cognac')
 
     return render_template('finished_cognac.html', groups=show_group, titles=group_titles)
 
@@ -178,7 +178,7 @@ def finished_vodka():
         write_file('vodka.json', vodka)
 
         flash('Группа успешно отправлена на повторную обработку')
-        return redirect('/vodka_grouping_prove')
+        return redirect('/finished_vodka')
 
     return render_template('finished_vodka.html', groups=show_group, titles=group_titles)
 
@@ -256,7 +256,8 @@ def finished_whiskey():
         write_file('whiskey.json', whiskey)
 
         flash('Группа успешно отправлена на повторную обработку')
-        return redirect('/whiskey_grouping_prove')
+        # return redirect('/whiskey_grouping_prove')
+        return redirect('/finished_whiskey')
 
     return render_template('finished_whiskey.html', groups=show_group, titles=group_titles)
 
@@ -336,7 +337,7 @@ def naming_cognac():
             write_file('cognac.json', cognac)
 
         flash('Операция проведена успешно')
-        return redirect('/cognac_grouping_prove')
+        return redirect('/naming_cognac')
 
     if 'delete_from_group' in request.form:
         del_link = request.form['delete_from_group']
@@ -448,7 +449,7 @@ def naming_vodka():
             write_file('vodka.json', vodka)
 
         flash('Операция проведена успешно')
-        return redirect('/vodka_grouping_prove')
+        return redirect('/naming_vodka')
 
     if 'delete_from_group' in request.form:
         del_link = request.form['delete_from_group']
@@ -560,7 +561,8 @@ def naming_whiskey():
             write_file('whiskey.json', whiskey)
 
         flash('Операция проведена успешно')
-        return redirect('/whiskey_grouping_prove')
+        # return redirect('/whiskey_grouping_prove')
+        return redirect('/naming_whiskey')
 
     if 'delete_from_group' in request.form:
         del_link = request.form['delete_from_group']
