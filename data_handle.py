@@ -11,9 +11,10 @@ import os
 # print(answer)
 # os.rename('productData_.json', 'productData.json')
 
-os.system('git add .')
-os.system('git commit -am "optimised"')
-os.system('git push heroku master')
+# os.system('git add .')
+# os.system('git commit -am "optimised"')
+# os.system('git push heroku master')
+# os.system('heroku login ""')
 
 # with open('whiskey.json') as f:
 #     whiskey = f.read()
