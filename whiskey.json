@@ -34,9 +34,7 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": true,
-    "product_id": "6291173",
-    "in_productData": true
+    "identified": false
   },
   {
     "_id": "3b548bb5e461d42a5fdacc26d699c4bd7f92e053",
@@ -2426,9 +2424,7 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": true,
-    "product_id": "6291173",
-    "in_productData": true
+    "identified": false
   },
   {
     "_id": "64c5e410992abf383a6828906040b16a3dfdced4",
@@ -2755,9 +2751,7 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": true,
-    "product_id": "6291173",
-    "in_productData": true
+    "identified": false
   },
   {
     "_id": "9d5d7bf6059932cdb47c5a9339ca74cfd3294c62",
@@ -2826,9 +2820,7 @@
       "winestreet"
     ],
     "status": "New",
-    "identified": true,
-    "product_id": "6291173",
-    "in_productData": true
+    "identified": false
   },
   {
     "_id": "1102deaa1d38b3d42bd9fbcf71b1a1297e119829",

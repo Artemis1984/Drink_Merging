@@ -13,8 +13,7 @@ import os
 
 os.system('git add .')
 os.system('git commit -am "optimised"')
-answer = list(os.popen('git push heroku master'))
-print(answer)
+os.system('git push heroku master')
 
 # with open('whiskey.json') as f:
 #     whiskey = f.read()
