@@ -1,2 +1,39 @@
 [
+  {
+    "_id": "5c686cf33fe869748238bf58da0b6b3a496d84db",
+    "features": {
+      "Артикул:": " 5099873046050",
+      "Объем:": "0.5 л",
+      "Тип:": "Виски",
+      "Выдержка:": "4 года",
+      "Крепость:": "40%",
+      "Тип виски:": "Теннесси",
+      "Сырье:": "Кукуруза, Рожь, Ячмень",
+      "Бренд:": "Jack Daniels",
+      "Страна:": "США",
+      "Поставщик:": "АСТ, WineStreet, ВАЙНС, Fort-Wine, ЮВС, ЦентрАлко",
+      "Срок годности:": " не ограничен при соблюдении условий хранения"
+    },
+    "image": [
+      "https://static.winestreet.ru/off-line/goods_file/31946/file_S.png"
+    ],
+    "link": [
+      "https://winestreet.ru/wiskey/jack-daniels/5099873046050.html"
+    ],
+    "name": [
+      "Виски американский «Jack Daniels №7 Tennessee», 0.5 л"
+    ],
+    "price": [
+      "1 696",
+      "1 645"
+    ],
+    "section": [
+      "Виски"
+    ],
+    "spider": [
+      "winestreet"
+    ],
+    "status": "New",
+    "identified": false
+  }
 ]
