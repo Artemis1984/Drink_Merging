@@ -17,13 +17,10 @@
     <div class="main_drink">
         <div class="col-md-4" style="margin-left: 386px">
           <div class="card mb-4 shadow-sm">
-<!--            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="https://s.winestyle.ru/images_gen/146/146100/0_0_prod_desktop.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="5%" y="95%" fill="#eceeef" dy=".3em">Something short and leading about the collection below—its contents, </text></svg>-->
-<!--            <p><img src="https://s.winestyle.ru/images_gen/712/71280/0_0_prod_desktop.jpg" style="margin-top: 10px"></p>-->
 
               <p><img src="{{main_drink['image'][0]}}" style="margin-top: 10px"></p>
 
               <div class="card-body">
-<!--              <p class="card-text">Виски "Macallan" Double Cask 12 Years Old, gift box, 0.7 л</p>-->
               <p class="card-text">{{main_drink['name'][0]}}</p>
               <p class="card-text">Объем - {{main_drink['features']['Объём']}}</p>
               <p class="card-text">Тип - {{main_drink['features']['Тип']}}</p>
@@ -31,7 +28,6 @@
               <p class="card-text">Цена - {{main_drink['price'][0]}}</p><br>
               <p class="card-text">{{main_drink['spider'][0]}}</p><br>
                   <div class="d-flex justify-content-between align-items-center">
-<!--                  <input type="submit" class="btn btn-secondary" value="Перейти" style="margin-left:100px">-->
                       <a href="{{main_drink['link'][0]}}" target="_blank" class="btn" style="margin-left:100px; color:green">Перейти</a>
 
               </div>
@@ -40,15 +36,11 @@
         </div>
 
     </div>
-<!--        <input type="text" name="title" class="form-control" placeholder="Наименование"><br>-->
-<!--        <input type="text" name="country"  class="form-control" placeholder="Страна"><br>-->
-<!--        <input type="text" name="type"  class="form-control" placeholder="Тип"><br>-->
+
 <div class="conta" style="display: flex; flex-direction: row; margin-left: auto;">
 
     <form  method="Post">
-<!--    <input type="hidden" name="saving">-->
     <input type="submit" name="saving" class="btn btn-success" value="Сохранить">
-<!--        <input type="submit" class="btn btn-success" value="Сохранить">-->
     </form>
 
 
@@ -105,7 +97,6 @@
               {% if i['identified'] is true %}
                   <b class="card-text" style="color:green">Идентифицирован</b><br><br>
                   {% endif %}
-<!--                  <p class="card-text">{{i['identified']}}</p><br>-->
               <p class="card-text">{{i["spider"][0]}}</p><br>
 
             <iframe name="myIFR" style="display: none"></iframe>
@@ -150,7 +141,6 @@
               {% if i['identified'] is true %}
                   <b class="card-text" style="color:green">Идентифицирован</b><br><br>
                   {% endif %}
-<!--                  <p class="card-text">{{i['identified']}}</p><br>-->
               <p class="card-text">{{i["spider"][0]}}</p><br>
 
             <iframe name="myIFR" style="display: none"></iframe>
@@ -160,7 +150,6 @@
                 <form target="myIFR" enctype="application/json" method="POST">
                   <input type="hidden" name="index" value="{{i['link'][0]}}">
                   <input type="submit" name="Yes" class="btn btn-success" value="Дoбавить" style="width: 150px; background-color: green" onclick="return ChangeBgColor(this);">
-<!--                    <label type="submit" name="Yes" class="btn btn-success" value="Да" style="width: 150px; background-color: green" onclick="return ChangeBgColor(this);">Да</label>-->
 
                 </form>
                       <a href="{{i['link'][0]}}" target="_blank" class="btn" style="margin-left:40px; color: green">Перейти</a>
@@ -169,7 +158,6 @@
 
 
                   </div>
-<!--                <small class="text-muted">9 mins</small>-->
               </div>
             </div>
           </div>
