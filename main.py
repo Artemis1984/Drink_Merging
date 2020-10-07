@@ -256,7 +256,6 @@ def finished_whiskey():
         write_file('whiskey.json', whiskey)
 
         flash('Группа успешно отправлена на повторную обработку')
-        # return redirect('/whiskey_grouping_prove')
         return redirect('/finished_whiskey')
 
     return render_template('finished_whiskey.html', groups=show_group, titles=group_titles)
@@ -410,12 +409,10 @@ def naming_vodka():
         write_file('del_list.json', [])
 
         product_dict = dict()
-        # exposure = request.form['exposure']
         fortress = request.form['fortress']
         if fortress:
             product_dict['features'] = {}
             product_dict['features']['Крепость'] = int(fortress)
-            # product_dict['features']['Выдержка'] = int(exposure)
             product_dict['images'] = {}
             product_dict['description'] = ''
             product_dict['section'] = 'Водка'
@@ -561,7 +558,6 @@ def naming_whiskey():
             write_file('whiskey.json', whiskey)
 
         flash('Операция проведена успешно')
-        # return redirect('/whiskey_grouping_prove')
         return redirect('/naming_whiskey')
 
     if 'delete_from_group' in request.form:
@@ -704,6 +700,8 @@ def grouping_cognac():
                 ind = cognac.index(drink)
                 drink['identified'] = True
                 drink['product_id'] = product_id
+                if not ('id' in cognac[ind].keys()):
+                    drink['id'] = take_article()
                 cognac[ind] = drink
             if cognac:
 
@@ -723,18 +721,15 @@ def grouping_cognac():
 
                     write_file('skip_list.json', skip_list)
 
-            with open('productData.json') as f:
-
-                link_list = read_file('link_list.json')
+            link_list = read_file('link_list.json')
 
             productData = read_file('productData.json')
 
             item_in_PD = [i for i in productData if i['id'] == product_id]
             if item_in_PD:
                 item_in_PD_index = productData.index(item_in_PD[0])
-                if item_in_PD:
-                    for i in link_list:
-                        item_in_PD[0]['links'].append(i)
+                for i in link_list:
+                    item_in_PD[0]['links'].append(i)
 
                     productData[item_in_PD_index] = item_in_PD[0]
 
@@ -762,11 +757,7 @@ def grouping_cognac():
 
                 write_file('link_list.json', link_list)
 
-                with open('articles.txt', 'r') as f:
-                    doc = f.read()
-                    num = doc.split('\n')
-                    del num[-1]
-                    product_id = num[-1]
+                product_id = take_article()
 
                 write_file('link_list.json', [])
 
@@ -775,6 +766,8 @@ def grouping_cognac():
                     ind = cognac.index(drink)
                     drink['identified'] = True
                     drink['product_id'] = product_id
+                    if not('id' in cognac[ind].keys()):
+                        drink['id'] = take_article()
                     cognac[ind] = drink
 
                 write_file('cognac.json', cognac)
@@ -792,11 +785,6 @@ def grouping_cognac():
                         if main_drink:
                             main_drink = main_drink[0]
                         write_file('skip_list.json', skip_list)
-
-                with open('articles.txt', 'w') as f:
-                    doc = doc.replace(product_id + '\n', '')
-                    f.write(doc)
-                    f.close()
 
             return redirect('/cognac_grouping_prove')
 
@@ -916,6 +904,8 @@ def grouping_vodka():
                 ind = vodka.index(drink)
                 drink['identified'] = True
                 drink['product_id'] = product_id
+                if not ('id' in vodka[ind].keys()):
+                    drink['id'] = take_article()
                 vodka[ind] = drink
             if vodka:
 
@@ -935,20 +925,17 @@ def grouping_vodka():
 
                     write_file('skip_list.json', skip_list)
 
-            with open('productData.json') as f:
-
-                link_list = read_file('link_list.json')
+            link_list = read_file('link_list.json')
 
             productData = read_file('productData.json')
 
             item_in_PD = [i for i in productData if i['id'] == product_id]
             if item_in_PD:
                 item_in_PD_index = productData.index(item_in_PD[0])
-                if item_in_PD:
-                    for i in link_list:
-                        item_in_PD[0]['links'].append(i)
+                for i in link_list:
+                    item_in_PD[0]['links'].append(i)
 
-                    productData[item_in_PD_index] = item_in_PD[0]
+                productData[item_in_PD_index] = item_in_PD[0]
 
             write_file('productData.json', productData)
 
@@ -974,11 +961,7 @@ def grouping_vodka():
 
                 write_file('link_list.json', link_list)
 
-                with open('articles.txt', 'r') as f:
-                    doc = f.read()
-                    num = doc.split('\n')
-                    del num[-1]
-                    product_id = num[-1]
+                product_id = take_article()
 
                 write_file('link_list.json', [])
 
@@ -987,6 +970,8 @@ def grouping_vodka():
                     ind = vodka.index(drink)
                     drink['identified'] = True
                     drink['product_id'] = product_id
+                    if not('id' in vodka[ind].keys()):
+                        drink['id'] = take_article()
                     vodka[ind] = drink
 
                 write_file('vodka.json', vodka)
@@ -1004,11 +989,6 @@ def grouping_vodka():
                         if main_drink:
                             main_drink = main_drink[0]
                         write_file('skip_list.json', skip_list)
-
-                with open('articles.txt', 'w') as f:
-                    doc = doc.replace(product_id + '\n', '')
-                    f.write(doc)
-                    f.close()
 
             return redirect('/vodka_grouping_prove')
 
@@ -1128,6 +1108,8 @@ def grouping_whiskey():
                 ind = whiskey.index(drink)
                 drink['identified'] = True
                 drink['product_id'] = product_id
+                if not ('id' in whiskey[ind].keys()):
+                    drink['id'] = take_article()
                 whiskey[ind] = drink
             if whiskey:
 
@@ -1147,24 +1129,20 @@ def grouping_whiskey():
 
                     write_file('skip_list.json', skip_list)
 
-            with open('productData.json') as f:
-
-                link_list = read_file('link_list.json')
+            link_list = read_file('link_list.json')
 
             productData = read_file('productData.json')
 
             item_in_PD = [i for i in productData if i['id'] == product_id]
             if item_in_PD:
                 item_in_PD_index = productData.index(item_in_PD[0])
-                if item_in_PD:
-                    for i in link_list:
-                        item_in_PD[0]['links'].append(i)
+                for i in link_list:
+                    item_in_PD[0]['links'].append(i)
 
                     productData[item_in_PD_index] = item_in_PD[0]
 
-            write_file('productData.json', productData)
-
             whiskey = read_file('whiskey.json')
+            write_file('productData.json', productData)
 
             need_change = [i for i in whiskey if i['link'][0] in link_list]
             for i in need_change:
@@ -1186,11 +1164,7 @@ def grouping_whiskey():
 
                 write_file('link_list.json', link_list)
 
-                with open('articles.txt', 'r') as f:
-                    doc = f.read()
-                    num = doc.split('\n')
-                    del num[-1]
-                    product_id = num[-1]
+                product_id = take_article()
 
                 write_file('link_list.json', [])
 
@@ -1199,6 +1173,8 @@ def grouping_whiskey():
                     ind = whiskey.index(drink)
                     drink['identified'] = True
                     drink['product_id'] = product_id
+                    if not('id' in whiskey[ind].keys()):
+                        drink['id'] = take_article()
                     whiskey[ind] = drink
 
                 write_file('whiskey.json', whiskey)
@@ -1216,11 +1192,6 @@ def grouping_whiskey():
                         if main_drink:
                             main_drink = main_drink[0]
                         write_file('skip_list.json', skip_list)
-
-                with open('articles.txt', 'w') as f:
-                    doc = doc.replace(product_id + '\n', '')
-                    f.write(doc)
-                    f.close()
 
             return redirect('/whiskey_grouping_prove')
 
@@ -1248,6 +1219,21 @@ def write_file(file_name, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.close()
     return
+
+
+def take_article():
+    with open('articles.txt', 'r') as f:
+        doc = f.read()
+        num = doc.split('\n')
+        del num[-1]
+        article = num[-1]
+
+    with open('articles.txt', 'w') as f:
+        doc = doc.replace(article + '\n', '')
+        f.write(doc)
+        f.close()
+
+    return article
 
 
 if __name__ == '__main__':
