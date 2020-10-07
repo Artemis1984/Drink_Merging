@@ -733,15 +733,15 @@ def grouping_cognac():
 
                     productData[item_in_PD_index] = item_in_PD[0]
 
-            write_file('productData.json', productData)
+                write_file('productData.json', productData)
 
-            cognac = read_file('cognac.json')
+                cognac = read_file('cognac.json')
 
-            need_change = [i for i in cognac if i['link'][0] in link_list]
-            for i in need_change:
-                ind = cognac.index(i)
-                i['in_productData'] = True
-                cognac[ind] = i
+                need_change = [i for i in cognac if i['link'][0] in link_list]
+                for i in need_change:
+                    ind = cognac.index(i)
+                    i['in_productData'] = True
+                    cognac[ind] = i
 
             write_file('cognac.json', cognac)
 
@@ -937,15 +937,15 @@ def grouping_vodka():
 
                 productData[item_in_PD_index] = item_in_PD[0]
 
-            write_file('productData.json', productData)
+                write_file('productData.json', productData)
 
-            vodka = read_file('vodka.json')
+                vodka = read_file('vodka.json')
 
-            need_change = [i for i in vodka if i['link'][0] in link_list]
-            for i in need_change:
-                ind = vodka.index(i)
-                i['in_productData'] = True
-                vodka[ind] = i
+                need_change = [i for i in vodka if i['link'][0] in link_list]
+                for i in need_change:
+                    ind = vodka.index(i)
+                    i['in_productData'] = True
+                    vodka[ind] = i
 
             write_file('vodka.json', vodka)
 
@@ -1141,14 +1141,14 @@ def grouping_whiskey():
 
                     productData[item_in_PD_index] = item_in_PD[0]
 
-            whiskey = read_file('whiskey.json')
-            write_file('productData.json', productData)
+                whiskey = read_file('whiskey.json')
+                write_file('productData.json', productData)
 
-            need_change = [i for i in whiskey if i['link'][0] in link_list]
-            for i in need_change:
-                ind = whiskey.index(i)
-                i['in_productData'] = True
-                whiskey[ind] = i
+                need_change = [i for i in whiskey if i['link'][0] in link_list]
+                for i in need_change:
+                    ind = whiskey.index(i)
+                    i['in_productData'] = True
+                    whiskey[ind] = i
 
             write_file('whiskey.json', whiskey)
 
