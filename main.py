@@ -1,14 +1,25 @@
 from flask import Flask, render_template, request, abort, url_for, redirect, flash
 import json
 import numpy
+import os
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '12091988BernardoProvencanoToto'
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main_page():
+
+    if 'save' in request.form:
+        os.system('git add .')
+        os.system('git commit -am "optimised"')
+        os.system('git push heroku master')
+
+        # print('document saved')
+        flash('Контент успешно сохранен')
+        return redirect('/')
+
     return render_template('main_page.html')
 
 
