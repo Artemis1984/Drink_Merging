@@ -17,9 +17,9 @@
     <div class="main_drink">
         <div class="col-md-4" style="margin-left: 386px">
           <div class="card mb-4 shadow-sm">
-
+            {% if 'image' in main_drink.keys()%}
               <p><img src="{{main_drink['image'][0]}}" style="margin-top: 10px"></p>
-
+            {% endif %}
               <div class="card-body">
               <p class="card-text">{{main_drink['name'][0]}}</p>
               <p class="card-text">Объем - {{main_drink['features']['Объём']}}</p>
