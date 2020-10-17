@@ -536,7 +536,11 @@ def naming_whiskey():
         fortress = request.form['fortress']
         if exposure and fortress:
             product_dict['features'] = {}
-            product_dict['features']['Крепость'] = int(fortress)
+            try:
+                product_dict['features']['Крепость'] = int(fortress)
+            except:
+                product_dict['features']['Крепость'] = float(fortress)
+
             product_dict['features']['Выдержка'] = int(exposure)
             product_dict['images'] = {}
             product_dict['description'] = ''
