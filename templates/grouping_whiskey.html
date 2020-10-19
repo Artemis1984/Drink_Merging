@@ -22,9 +22,11 @@
             {% endif %}
               <div class="card-body">
               <p class="card-text">{{main_drink['name'][0]}}</p>
-              <p class="card-text">Объем - {{main_drink['features']['Объём']}}</p>
+              <p class="card-text">Объем - {{main_drink['features']['Объем']}}</p>
               <p class="card-text">Тип - {{main_drink['features']['Тип']}}</p>
               <p class="card-text">Страна - {{main_drink['features']['Страна']}}</p>
+              <p class="card-text">Выдержка - {{main_drink['features']['Выдержка']}}</p>
+              <p class="card-text">Крепость - {{main_drink['features']['Крепость']}}</p>
               <p class="card-text">Цена - {{main_drink['price'][0]}}</p><br>
               <p class="card-text">{{main_drink['spider'][0]}}</p><br>
                   <div class="d-flex justify-content-between align-items-center">
@@ -90,6 +92,9 @@
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
               <p class="card-text">Тип - {{i["features"]["Тип"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
+              <p class="card-text">Бренд - {{i["features"]["Бренд"]}}</p>
+              <p class="card-text">Выдержка - {{i['features']['Выдержка']}}</p>
+              <p class="card-text">Крепость - {{i['features']['Крепость']}}</p>
             {% endif %}
               {% if 'price' in i.keys()%}
               <p class="card-text">Цена - {{i["price"][0]}}</p><br>
