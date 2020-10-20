@@ -555,7 +555,7 @@ def naming_whiskey():
 
             products = [i for i in whiskey if 'product_id' in i.keys()]
             product_dict['links'] = [i['link'][0] for i in products if i['product_id'] == product_dict['id']]
-            product_dict['images']['default'] = [i['image'][0] for i in whiskey if i['link'][0] in product_dict['links']][0]
+            product_dict['images']['default'] = [i['image'][0] for i in whiskey if i['link'][0] in product_dict['links'] and 'image' in i.keys()][0]
 
             productData = read_file('productData.json')
 
