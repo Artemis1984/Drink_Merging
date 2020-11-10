@@ -19,17 +19,17 @@
           <div class="card mb-4 shadow-sm">
 
 
-              <p><img src="{{main_drink['image'][0]}}" style="margin-top: 10px"></p>
+              <p><img src="{{main_drink['image']}}" style="margin-top: 10px"></p>
 
               <div class="card-body">
-              <p class="card-text">{{main_drink['name'][0]}}</p>
-              <p class="card-text">Объем - {{main_drink['features']['Объём']}}</p>
+              <p class="card-text">{{main_drink['name']}}</p>
+              <p class="card-text">Объем - {{main_drink['features']['Объем']}}</p>
               <p class="card-text">Тип - {{main_drink['features']['Тип']}}</p>
               <p class="card-text">Страна - {{main_drink['features']['Страна']}}</p>
-              <p class="card-text">Цена - {{main_drink['price'][0]}}</p><br>
-              <p class="card-text">{{main_drink['spider'][0]}}</p><br>
+              <p class="card-text">Цена - {{main_drink['price']}}</p><br>
+              <p class="card-text">{{main_drink['spider']}}</p><br>
                   <div class="d-flex justify-content-between align-items-center">
-                      <a href="{{main_drink['link'][0]}}" target="_blank" class="btn" style="margin-left:100px; color:green">Перейти</a>
+                      <a href="{{main_drink['link']}}" target="_blank" class="btn" style="margin-left:100px; color:green">Перейти</a>
 
               </div>
             </div>
@@ -46,7 +46,7 @@
 
 
     <form  method="Post">
-    <input type="hidden" name="skip" value="{{main_drink['link'][0]}}">
+    <input type="hidden" name="skip" value="{{main_drink['link']}}">
         <input type="submit" style="margin-left: 20px" class="btn btn-warning" value="Пропустить">
     </form>
 
@@ -86,24 +86,24 @@
             <p><img src={{i["image"][0]}} style="width:100px; margin-top: 10px"></p>
             {% endif %}
               <div class="card-body">
-              <p class="card-text">{{i["name"][0]}}</p><br>
+              <p class="card-text">{{i["name"]}}</p><br>
               {% if 'features' in i.keys()%}
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
               <p class="card-text">Тип - {{i["features"]["Тип"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
             {% endif %}
               {% if 'price' in i.keys()%}
-              <p class="card-text">Цена - {{i["price"][0]}}</p><br>
+              <p class="card-text">Цена - {{i["price"]}}</p><br>
             {% endif %}
               {% if i['identified'] is true %}
                   <b class="card-text" style="color:green">Идентифицирован</b><br><br>
                   {% endif %}
-              <p class="card-text">{{i["spider"][0]}}</p><br>
+              <p class="card-text">{{i["spider"]}}</p><br>
 
             <iframe name="myIFR" style="display: none"></iframe>
               <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                      <a href="{{i['link'][0]}}" target="_blank" class="btn" style="margin-left:100px; color:green">Перейти</a>
+                      <a href="{{i['link']}}" target="_blank" class="btn" style="margin-left:100px; color:green">Перейти</a>
 
                   </div>
               </div>
@@ -127,33 +127,33 @@
 
             <div class="card mb-4 shadow-sm">
             {% if 'image' in i.keys()%}
-            <p><img src={{i["image"][0]}} style="width:100px; margin-left: 120px; margin-top: 10px"></p>
+            <p><img src={{i["image"]}} style="width:100px; margin-left: 120px; margin-top: 10px"></p>
             {% endif %}
               <div class="card-body">
-              <p class="card-text">{{i["name"][0]}}</p><br>
+              <p class="card-text">{{i["name"]}}</p><br>
               {% if 'features' in i.keys()%}
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
               <p class="card-text">Тип - {{i["features"]["Тип"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
             {% endif %}
               {% if 'price' in i.keys()%}
-              <p class="card-text">Цена - {{i["price"][0]}}</p><br>
+              <p class="card-text">Цена - {{i["price"]}}</p><br>
             {% endif %}
               {% if i['identified'] is true %}
                   <b class="card-text" style="color:green">Идентифицирован</b><br><br>
                   {% endif %}
-              <p class="card-text">{{i["spider"][0]}}</p><br>
+              <p class="card-text">{{i["spider"]}}</p><br>
 
             <iframe name="myIFR" style="display: none"></iframe>
               <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
 
                 <form target="myIFR" enctype="application/json" method="POST">
-                  <input type="hidden" name="index" value="{{i['link'][0]}}">
+                  <input type="hidden" name="index" value="{{i['link']}}">
                   <input type="submit" name="Yes" class="btn btn-success" value="Дoбавить" style="width: 150px; background-color: green" onclick="return ChangeBgColor(this);">
 
                 </form>
-                      <a href="{{i['link'][0]}}" target="_blank" class="btn" style="margin-left:40px; color: green">Перейти</a>
+                      <a href="{{i['link']}}" target="_blank" class="btn" style="margin-left:40px; color: green">Перейти</a>
 
 
                   </div>

@@ -54,27 +54,29 @@
 
             <div class="card mb-4 shadow-sm">
             {% if 'image' in i.keys()%}
-            <p><img src={{i["image"][0]}} style="width:100px; margin-top: 10px"></p>
+            <p><img src={{i["image"]}} style="width:100px; margin-top: 10px"></p>
             {% endif %}
               <div class="card-body">
-              <p class="card-text">{{i["name"][0]}}</p><br>
+              <p class="card-text">{{i["name"]}}</p><br>
               {% if 'features' in i.keys()%}
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
               <p class="card-text">Тип - {{i["features"]["Тип"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
+              <p class="card-text">Бренд - {{i["features"]["Бренд"]}}</p>
+              <p class="card-text">Крепость - {{i["features"]["Крепость"]}}</p>
             {% endif %}
               {% if 'price' in i.keys()%}
-              <p class="card-text">Цена - {{i["price"][0]}}</p><br>
+              <p class="card-text">Цена - {{i["price"]}}</p><br>
             {% endif %}
               {% if i['identified'] is true %}
                   <b class="card-text" style="color:green">Идентифицирован</b><br><br>
                   {% endif %}
-              <p class="card-text">{{i["spider"][0]}}</p><br>
+              <p class="card-text">{{i["spider"]}}</p><br>
 
             <iframe name="myIFR" style="display: none"></iframe>
               <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                      <a href="{{i['link'][0]}}" target="_blank" class="btn" style="margin-left:105px; color:green">Перейти</a>
+                      <a href="{{i['link']}}" target="_blank" class="btn" style="margin-left:105px; color:green">Перейти</a>
 
                   </div>
               </div>
