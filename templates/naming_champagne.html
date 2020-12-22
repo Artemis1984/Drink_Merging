@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Наименование Шампанское{% endblock %}
+{% block sections %}
+<a class="p-2 text-dark" href="/">Главная</a>
+<a class="p-2 text-dark" href="/grouping_champagne">Группировка Шампанское</a>
+<a class="p-2 text-dark" href="/finished_champagne">Готовые Шампанское</a>
+{% endblock %}
+{% block body %}
+<h1 align="center">Наименование Шампанское и игристое вино</h1><br>
+<h3 class="card-text"> Осталось {{undone}}</h3><br>
+<div>
+    <!--{% for msg in get_flashed_messages() %}-->
+    <!--<h1 style="width:auto; font-size: 2.0rem; margin-top:30px; color: green" align="center"> {{msg}} </h1>-->
+    <!--{% endfor %}-->
+    {% for cat, msg in get_flashed_messages(True) %}
+        {% if cat == 'error' %}
+            <h1 style="width:auto; font-size: 2.0rem; margin-top:30px; color: red" align="center"> {{msg}} </h1>
+        {% else %}
+            <h1 style="width:auto; font-size: 2.0rem; margin-top:30px; color: green" align="center"> {{msg}} </h1>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
+
+      {% block products %}
+{% if groups %}
+{% for group in groups %}
+        <div style="display: flex; margin-left:405px">
+         <form action="/naming_champagne" method="POST">
+            <input type="hidden" name="previous" value="{{group}}">
+            <input type="submit"  class="btn btn-secondary" value="Назад" style="width:150px; margin-top: 10px;">
+         </form>
+         <form action="/naming_champagne" method="POST">
+            <input type="hidden" name="next" value="{{group}}">
+            <input type="submit"  class="btn btn-secondary" value="Вперед" style="width:150px; margin-top: 10px; margin-left: 10px;">
+         </form>
+        </div>
+
+    <div align="center" style="margin-top:70px">
+        <form enctype="application/json" method="Post">
+            <input type="hidden" name="group_id" value="{{group[0]['product_id']}}">
+            <input type="text" name="title" class="form-control" placeholder="Наименование" value=""><br>
+            <input type="text" name="country"  class="form-control" placeholder="Страна"><br>
+            <input type="text" name="brand"  class="form-control" placeholder="Бренд"><br>
+            <input type="text" name="type"  class="form-control" placeholder="Тип"><br>
+            <input type="text" name="color"  class="form-control" placeholder="Цвет"><br>
+            <input type="text" name="sugar"  class="form-control" placeholder="Сахар"><br>
+            <input type="text" name="fortress"  class="form-control" placeholder="Крепость"><br>
+
+            <input type="submit" style="width:200px" name="saving" class="btn btn-success" value="Сохранить">
+        </form>
+    </div>
+        <div  align="center" style="margin-top: 50px">
+      <div class="row" style="border-width: 10px; border-style: double;">
+{% for i in group %}
+
+          <div class="col-md-4">
+
+
+            <div class="card mb-4 shadow-sm">
+            {% if 'image' in i.keys()%}
+            <p><img src={{i["image"]}} style="width:100px; margin-top: 10px"></p>
+            {% endif %}
+              <div class="card-body">
+              <p class="card-text">{{i["name"]}}</p><br>
+              {% if 'features' in i.keys()%}
+              <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
+              <p class="card-text">Тип - {{i["features"]["Тип"]}}</p>
+              <p class="card-text">Цвет - {{i["features"]["Цвет"]}}</p>
+              <p class="card-text">Сахар - {{i["features"]["Сахар"]}}</p>
+              <p class="card-text">Крепость - {{i['features']['Крепость']}}</p>
+              <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
+              <p class="card-text">Бренд - {{i["features"]["Бренд"]}}</p>
+            {% endif %}
+              {% if 'price' in i.keys()%}
+              <p class="card-text">Цена - {{i["price"]}}</p><br>
+            {% endif %}
+              {% if i['identified'] is true %}
+                  <b class="card-text" style="color:green">Идентифицирован</b><br><br>
+                  {% endif %}
+              <p class="card-text">{{i["spider"]}}</p><br>
+
+            <iframe name="myIFR" style="display: none"></iframe>
+              <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                      <form target="myIFR" enctype="application/json" method="POST">
+        <input type="hidden" name="delete_from_group" value="{{i['link']}}">
+            <input type="submit"  class="btn btn-danger" value="Удалить из группы" style="width:180px; background-color: red;" onclick="return ChangeProductButton(this);">
+            </form>
+                      <a href="{{i['link']}}" target="_blank" class="btn" style="margin-left:20px; color:green">Перейти</a>
+
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+             {% endfor %}
+      </div>
+        </div>
+          {% endfor %}
+{% else %}
+
+<h1 style="color: green" align="center">Сделал дело - гуляй смело!</h1>
+{% endif %}
+
+<script>
+<!--        function ChangeNextButton(Element) {-->
+<!--        if(Element.style.backgroundColor === 'green'){-->
+<!--            Element.style.backgroundColor = 'orange';-->
+<!--            Element.value = 'Отменить';-->
+<!--&lt;!&ndash;            Element.innerHTML = 'Отменить';&ndash;&gt;-->
+<!--            return true;-->
+<!--            }-->
+<!--        else{-->
+<!--             Element.style.backgroundColor = 'green';-->
+<!--             Element.value = 'Добавить в группу';-->
+<!--&lt;!&ndash;             Element.innerHTML = 'Добавить в группу';&ndash;&gt;-->
+<!--            return true;-->
+<!--            }-->
+<!--        }-->
+
+                function ChangeProductButton(Element) {
+        if(Element.style.backgroundColor === 'red'){
+            Element.style.backgroundColor = 'orange';
+            Element.value = 'Отменить';
+<!--            Element.innerHTML = 'Отменить';-->
+            return true;
+            }
+        else{
+             Element.style.backgroundColor = 'red';
+             Element.value = 'Удалить из группы';
+<!--             Element.innerHTML = 'Добавить в группу';-->
+            return true;
+            }
+        }
+    </script>
+
+        {% endblock %}
