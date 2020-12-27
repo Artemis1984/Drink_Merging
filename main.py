@@ -849,6 +849,7 @@ def naming_whiskey():
         product_dict['features']['Бренд'] = request.form['brand']
         product_dict['features']['Тип'] = request.form['type']
         if product_dict['name'] and product_dict['features']['Страна'] and product_dict['features']['Бренд'] and product_dict['features']['Тип'] and product_dict['features']['Выдержка'] and product_dict['features']['Крепость']:
+            print('OKKKKKKK')
             whiskey = list(Merger_DB['Виски'].find())
 
             products = [i for i in whiskey if 'product_id' in i.keys()]
@@ -1134,7 +1135,7 @@ def grouping_champagne():
 
             return redirect('/champagne_grouping_prove')
 
-    group_id = set([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    group_id = numpy.unique([i['product_id'] for i in result_list if 'product_id' in i.keys()])
     groups = list()
     products_with_id = [i for i in champagne if 'product_id' in i.keys()]
     for i in group_id:
@@ -1144,8 +1145,26 @@ def grouping_champagne():
 
     # число несгруппированных напитков
     undone = Merger_DB['Шампанское и игристое вино'].count_documents({'identified': False})
+    # Номера групп в группировке
+    productData = list(Merger_DB['productData'].find({'section': 'Шампанское и игристое вино'}))
+    new_nums = []
+    if groups:
+        # group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'product_id' in k[0].keys()])
+        group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
+        group_nums = list(group_nums)
+        if group_nums:
+            for i in group_nums:
+                new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
+            new_group = []
+            for i in groups:
+                if 'in_productData' in i[0].keys():
+                    new_group.append(i)
+            for i in groups:
+                if not (i in new_group):
+                    new_group.append(i)
+            groups = new_group
 
-    return render_template('grouping_champagne.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone)
+    return render_template('grouping_champagne.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone, group_nums=new_nums)
 
 
 @app.route('/grouping_cognac/', methods=['GET', 'POST'])
@@ -1362,7 +1381,7 @@ def grouping_cognac():
 
             return redirect('/cognac_grouping_prove')
 
-    group_id = set([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    group_id = numpy.unique([i['product_id'] for i in result_list if 'product_id' in i.keys()])
     groups = list()
     products_with_id = [i for i in cognac if 'product_id' in i.keys()]
     for i in group_id:
@@ -1372,8 +1391,26 @@ def grouping_cognac():
 
     # число несгруппированных напитков
     undone = Merger_DB['Коньяк'].count_documents({'identified': False})
+    # Номера групп в группировке
+    productData = list(Merger_DB['productData'].find({'section': 'Коньяк'}))
+    new_nums = []
+    if groups:
+        # group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'product_id' in k[0].keys()])
+        group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
+        group_nums = list(group_nums)
+        if group_nums:
+            for i in group_nums:
+                new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
+            new_group = []
+            for i in groups:
+                if 'in_productData' in i[0].keys():
+                    new_group.append(i)
+            for i in groups:
+                if not (i in new_group):
+                    new_group.append(i)
+            groups = new_group
 
-    return render_template('grouping_cognac.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone)
+    return render_template('grouping_cognac.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone, group_nums=new_nums)
 
 
 @app.route('/grouping_vodka/', methods=['GET', 'POST'])
@@ -1591,7 +1628,7 @@ def grouping_vodka():
 
             return redirect('/vodka_grouping_prove')
 
-    group_id = set([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    group_id = numpy.unique([i['product_id'] for i in result_list if 'product_id' in i.keys()])
     groups = list()
     products_with_id = [i for i in vodka if 'product_id' in i.keys()]
     for i in group_id:
@@ -1601,8 +1638,26 @@ def grouping_vodka():
         
     # число несгруппированных напитков 
     undone = Merger_DB['Водка'].count_documents({'identified': False})
+    # Номера групп в группировке
+    productData = list(Merger_DB['productData'].find({'section': 'Водка'}))
+    new_nums = []
+    if groups:
+        # group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'product_id' in k[0].keys()])
+        group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
+        group_nums = list(group_nums)
+        if group_nums:
+            for i in group_nums:
+                new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
+            new_group = []
+            for i in groups:
+                if 'in_productData' in i[0].keys():
+                    new_group.append(i)
+            for i in groups:
+                if not (i in new_group):
+                    new_group.append(i)
+            groups = new_group
 
-    return render_template('grouping_vodka.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone)
+    return render_template('grouping_vodka.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone, group_nums=new_nums)
 
 
 @app.route('/grouping_whiskey/', methods=['GET', 'POST'])
@@ -1823,7 +1878,8 @@ def grouping_whiskey():
 
             return redirect('/whiskey_grouping_prove')
 
-    group_id = set([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    # group_id = set([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    group_id = numpy.unique([i['product_id'] for i in result_list if 'product_id' in i.keys()])
     groups = list()
     products_with_id = [i for i in whiskey if 'product_id' in i.keys()]
     for i in group_id:
@@ -1833,8 +1889,26 @@ def grouping_whiskey():
         
     # число несгруппированных напитков
     undone = Merger_DB['Виски'].count_documents({'identified': False})
+    # Номера групп в группировке
+    productData = list(Merger_DB['productData'].find({'section': 'Виски'}))
+    new_nums = []
+    if groups:
+        # group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'product_id' in k[0].keys()])
+        group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
+        group_nums = list(group_nums)
+        if group_nums:
+            for i in group_nums:
+                new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
+            new_group = []
+            for i in groups:
+                if 'in_productData' in i[0].keys():
+                    new_group.append(i)
+            for i in groups:
+                if not (i in new_group):
+                    new_group.append(i)
+            groups = new_group
 
-    return render_template('grouping_whiskey.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone)
+    return render_template('grouping_whiskey.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone, group_nums=new_nums)
 
 
 def read_file(file_name):

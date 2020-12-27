@@ -72,12 +72,15 @@
 
 {% if groups %}
 {% for group in groups %}
-        <div  align="center" style="margin-top: 50px">
+      <div  align="center" style="margin-top: 50px">
+      {% if 'in_productData' in group[0].keys() %}
+      <h1>№{{group_nums[groups.index(group)]}}</h1>
+      {% endif %}
             <button type="button" class="btn btn-danger" onclick="this.parentNode.style.display='none'" style="width:300px;">Убрать</button>
-            <form target="myIFR" enctype="application/json" method="POST">
-        <input type="hidden" name="add_to_group" value="{{group[0]['product_id']}}">
+        <form target="myIFR" enctype="application/json" method="POST">
+            <input type="hidden" name="add_to_group" value="{{group[0]['product_id']}}">
             <input type="submit"  class="btn btn-success" value="Дoбавить в группу" style="width:300px; background-color: green; margin-top: 10px" onclick="return ChangeGroupButton(this);">
-            </form>
+        </form>
       <div class="row" style="border-width: 10px; border-style: double;">
 {% for i in group %}
 
