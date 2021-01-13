@@ -18,6 +18,10 @@ def main_page():
     return render_template('main_page.html')
 
 
+@app.route('/beer_grouping_prove')
+def beer_grouping_prove():
+    return render_template('beer_grouping_prove.html')
+
 @app.route('/champagne_grouping_prove')
 def champagne_grouping_prove():
     return render_template('champagne_grouping_prove.html')
@@ -38,9 +42,112 @@ def whiskey_grouping_prove():
     return render_template('whiskey_grouping_prove.html')
 
 
+
+
+# testing beer finished
+
+
+@app.route('/finished_beer', methods=['GET', 'POST'])
+def finished_beer():
+
+    # Merger_DB['Пиво'].delete_many({})
+    # for i in read_file('beer.json'):
+    #     Merger_DB['Пиво'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
+    #
+    # for i in read_file('productData.json'):
+    #     Merger_DB['productData'].update({'_id': i['id']}, {'$set': i}, upsert=True)
+
+    show_group = None
+    group_titles = None
+
+    beer = list(Merger_DB['Пиво'].find())
+
+    merged_beer = list(Merger_DB['productData'].find({'section': 'Пиво'}))
+
+    productData_links = [i['links'] for i in merged_beer]
+    productData_groups = [i for i in merged_beer]
+
+    if productData_links:
+        show_group = productData_links[0]
+
+        show_group = [[i for i in beer if i['link'] in show_group]]
+        group_titles = productData_groups[0]
+
+    if 'search' in request.form:
+        group_ind = int(request.form['search']) - 1
+        if group_ind > len(merged_beer):
+            flash('У вас нет столько групп')
+            return redirect('/finished_beer')
+        show_group = productData_links[group_ind]
+        show_group = [[i for i in beer if i['link'] in show_group]]
+        group_titles = productData_groups[group_ind]
+
+    if 'next' in request.form:
+
+        for i in productData_groups:
+
+            if i['id'] == request.form['next']:
+                ind = productData_groups.index(i)
+                if ind != len(productData_groups) - 1:
+                    show_group = productData_links[ind + 1]
+                    show_group = [[k for k in beer if k['link'] in show_group]]
+                    group_titles = productData_groups[ind + 1]
+
+                    break
+                else:
+                    show_group = productData_links[-1]
+                    show_group = [[k for k in beer if k['link'] in show_group]]
+                    group_titles = productData_groups[-1]
+
+    if 'previous' in request.form:
+        for i in productData_groups:
+
+            if i['id'] == request.form['previous']:
+                ind = productData_groups.index(i)
+                if ind != 0:
+                    show_group = productData_links[ind - 1]
+                    show_group = [[k for k in beer if k['link'] in show_group]]
+                    group_titles = productData_groups[ind - 1]
+                    break
+                else:
+                    show_group = productData_links[0]
+                    show_group = [[k for k in beer if k['link'] in show_group]]
+                    group_titles = productData_groups[0]
+
+    if 'delete_from_finished' in request.form:
+        delete_id = request.form['delete_from_finished']
+
+        Merger_DB['productData'].delete_one({'_id': delete_id})
+
+        product_with_id = list(Merger_DB['Пиво'].find({'product_id': {'$exists': True}}))
+
+        need_to_delete_list = [i for i in product_with_id if i['product_id'] == delete_id]
+        for i in need_to_delete_list:
+            Merger_DB['Пиво'].update({'_id': i['_id']}, {'$unset': {'in_productData': 1}},
+                                                           upsert=True)
+
+        # Saving data to files
+        beer = list(Merger_DB['Пиво'].find())
+        productData_file = list(Merger_DB['productData'].find())
+        write_file('productData.json', productData_file)
+        write_file('beer.json', beer)
+
+        flash('Группа успешно отправлена на повторную обработку')
+        return redirect('/finished_beer')
+
+    # Номер группы
+    group_num = 0
+    if group_titles:
+        group_num = productData_groups.index(group_titles) + 1
+    # число готовых групп
+    done = Merger_DB['productData'].count_documents({'section': 'Пиво'})
+
+    return render_template('finished_beer.html', groups=show_group, titles=group_titles, done=done, group_num=group_num)
+
+
 @app.route('/finished_champagne', methods=['GET', 'POST'])
 def finished_champagne():
-
+    # Merger_DB['Шампанское и игристое вино'].delete_many({})
     # for i in read_file('champagne.json'):
     #     Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
     #
@@ -113,7 +220,6 @@ def finished_champagne():
 
         need_to_delete_list = [i for i in product_with_id if i['product_id'] == delete_id]
         for i in need_to_delete_list:
-            i.pop('in_productData')
             Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$unset': {'in_productData': 1}}, upsert=True)
 
         # Saving data to files
@@ -126,7 +232,9 @@ def finished_champagne():
         return redirect('/finished_champagne')
     
     # Номер группы
-    group_num = productData_groups.index(group_titles) + 1
+    group_num = 0
+    if group_titles:
+        group_num = productData_groups.index(group_titles) + 1
     # число готовых групп
     done = Merger_DB['productData'].count_documents({'section': 'Шампанское и игристое вино'})
 
@@ -220,7 +328,9 @@ def finished_cognac():
         return redirect('/finished_cognac')
 
     # Номер группы
-    group_num = productData_groups.index(group_titles) + 1
+    group_num = 0
+    if group_titles:
+        group_num = productData_groups.index(group_titles) + 1
     # Число готовых
     done = Merger_DB['productData'].count_documents({'section': 'Коньяк'})
 
@@ -314,7 +424,9 @@ def finished_vodka():
         return redirect('/finished_vodka')
     
     # Номер группы
-    group_num = productData_groups.index(group_titles) + 1
+    group_num = 0
+    if group_titles:
+        group_num = productData_groups.index(group_titles) + 1
     # число готовых групп
     done = Merger_DB['productData'].count_documents({'section': 'Водка'})
 
@@ -408,11 +520,146 @@ def finished_whiskey():
         return redirect('/finished_whiskey')
     
     # Номер группы
-    group_num = productData_groups.index(group_titles) + 1
+    group_num = 0
+    if group_titles:
+        group_num = productData_groups.index(group_titles) + 1
     # число готовых групп
     done = Merger_DB['productData'].count_documents({'section': 'Виски'})
 
     return render_template('finished_whiskey.html', groups=show_group, titles=group_titles, done=done, group_num=group_num)
+
+
+@app.route('/naming_beer', methods=['GET', 'POST'])
+def naming_beer():
+    ip_address = request.remote_addr.replace('.', '')
+
+    if request.method == 'GET':
+        Merger_DB['del_list'].update({'_id': 'beer_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+    show_group = None
+    beer = list(Merger_DB['Пиво'].find())
+
+    group_id = numpy.unique(
+        [i['product_id'] for i in beer if 'product_id' in i.keys() and not ('in_productData' in i.keys())])
+    groups = list()
+    products_with_id = [i for i in beer if 'product_id' in i.keys()]
+    for i in group_id:
+        group = [k for k in products_with_id if k['product_id'] == i]
+        groups.append(group)
+    if groups:
+        show_group = [groups[0]]
+
+    if 'saving' in request.form:
+
+        beer = list(Merger_DB['Пиво'].find())
+
+        del_list = list(
+            Merger_DB['del_list'].find({'$and': [{'_id': 'beer_del_list'}, {ip_address: {'$exists': True}}]}))
+        if del_list:
+            del_list = del_list[0][ip_address]
+
+        for i in del_list:
+            del_product = [k for k in beer if k['link'] == i]
+            if del_product:
+                # del_product[0]['identified'] = False
+                # del_product[0].pop('product_id')
+                Merger_DB['Пиво'].update({'_id': del_product[0]['_id']},
+                                                               {'$set': {'identified': False}})
+                Merger_DB['Пиво'].update({'_id': del_product[0]['_id']},
+                                                               {'$unset': {'product_id': 1}})
+
+        Merger_DB['del_list'].update({'_id': 'beer_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+        product_dict = dict()
+        fortress = request.form['fortress']
+        product_dict['features'] = {}
+        product_dict['features']['Крепость'] = None
+        product_dict['images'] = {}
+        product_dict['description'] = ''
+        product_dict['section'] = 'Пиво'
+        product_dict['id'] = request.form['group_id']
+        product_dict['name'] = request.form['title']
+        if fortress:
+            product_dict['features']['Крепость'] = float(fortress) if '.' in fortress else int(fortress)
+        product_dict['features']['Страна'] = request.form['country']
+        product_dict['features']['Бренд'] = request.form['brand']
+        product_dict['features']['Цвет'] = request.form['color']
+        product_dict['features']['Фильтрация'] = request.form['filtration']
+
+        if product_dict['name'] and product_dict['features']['Крепость'] and product_dict['features']['Страна'] and \
+                product_dict['features']['Бренд'] and product_dict['features'][
+            'Цвет'] and product_dict['features']['Фильтрация']:
+            beer = list(Merger_DB['Пиво'].find())
+
+            products = [i for i in beer if 'product_id' in i.keys()]
+            product_dict['links'] = [i['link'] for i in products if i['product_id'] == product_dict['id']]
+            product_dict['images']['default'] = [i['image'] for i in beer if i['link'] in product_dict['links']][0]
+
+            Merger_DB['productData'].update({'_id': product_dict['id']}, {'$set': product_dict}, upsert=True)
+
+            for i in beer:
+                if 'product_id' in i.keys():
+                    if i['product_id'] == product_dict['id']:
+                        # i['in_productData'] = True
+                        # Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
+                        Merger_DB['Пиво'].update({'_id': i['_id']},
+                                                                       {'$set': {'in_productData': True}}, upsert=True)
+
+            # saving data to files
+            beer = list(Merger_DB['Пиво'].find())
+            write_file('beer.json', beer)
+            productData = list(Merger_DB['productData'].find())
+            write_file('productData.json', productData)
+
+            flash('Операция проведена успешно', 'success')
+            return redirect('/naming_beer')
+        else:
+            # saving data to files
+            beer = list(Merger_DB['Пиво'].find())
+            write_file('beer.json', beer)
+
+            flash('Нужно заполнить все поля', category='error')
+            return redirect('/naming_beer')
+
+    if 'delete_from_group' in request.form:
+        del_link = request.form['delete_from_group']
+
+        del_list = list(
+            Merger_DB['del_list'].find({'$and': [{'_id': 'beer_del_list'}, {ip_address: {'$exists': True}}]}))
+        if del_list:
+            del_list = del_list[0][ip_address]
+
+        if not (del_link in del_list):
+            del_list.append(del_link)
+        else:
+            del_list.remove(del_link)
+
+        Merger_DB['del_list'].update({'_id': 'beer_del_list'}, {'$set': {ip_address: del_list}}, upsert=True)
+
+    if 'next' in request.form:
+        for i in groups:
+            if str(i) == str(request.form['next']):
+                if groups.index(i) != len(groups) - 1:
+                    show_group = [groups[groups.index(i) + 1]]
+                    break
+                else:
+                    show_group = [groups[-1]]
+
+        Merger_DB['del_list'].update({'_id': 'beer_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+    if 'previous' in request.form:
+        for i in groups:
+            if str(i) == str(request.form['previous']):
+                if groups.index(i) != 0:
+                    show_group = [groups[groups.index(i) - 1]]
+                    break
+
+        Merger_DB['del_list'].update({'_id': 'beer_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+    # число неготовых групп
+    undone = len(groups)
+
+    return render_template('naming_beer.html', groups=show_group, undone=undone)
 
 
 @app.route('/naming_champagne', methods=['GET', 'POST'])
@@ -447,9 +694,9 @@ def naming_champagne():
         for i in del_list:
             del_product = [k for k in champagne if k['link'] == i]
             if del_product:
-                del_product[0]['identified'] = False
-                del_product[0].pop('product_id')
-                Merger_DB['Шампанское и игристое вино'].update({'_id': del_product[0]['_id']}, {'$set': del_product[0]})
+                # del_product[0]['identified'] = False
+                # del_product[0].pop('product_id')
+                Merger_DB['Шампанское и игристое вино'].update({'_id': del_product[0]['_id']}, {'$set': {'identified': False}})
                 Merger_DB['Шампанское и игристое вино'].update({'_id': del_product[0]['_id']}, {'$unset': {'product_id': 1}})
 
         Merger_DB['del_list'].update({'_id': 'champagne_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
@@ -483,9 +730,10 @@ def naming_champagne():
             for i in champagne:
                 if 'product_id' in i.keys():
                     if i['product_id'] == product_dict['id']:
-                        i['in_productData'] = True
-                        Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
-    
+                        # i['in_productData'] = True
+                        # Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
+                        Merger_DB['Шампанское и игристое вино'].update({'_id': i['_id']}, {'$set': {'in_productData': True}}, upsert=True)
+
             # saving data to files
             champagne = list(Merger_DB['Шампанское и игристое вино'].find())
             write_file('champagne.json', champagne)
@@ -573,9 +821,9 @@ def naming_cognac():
         for i in del_list:
             del_product = [k for k in cognac if k['link'] == i]
             if del_product:
-                del_product[0]['identified'] = False
-                del_product[0].pop('product_id')
-                Merger_DB['Коньяк'].update({'_id': del_product[0]['_id']}, {'$set': del_product[0]})
+                # del_product[0]['identified'] = False
+                # del_product[0].pop('product_id')
+                Merger_DB['Коньяк'].update({'_id': del_product[0]['_id']}, {'$set': {'identified': False}})
                 Merger_DB['Коньяк'].update({'_id': del_product[0]['_id']}, {'$unset': {'product_id': 1}})
 
         Merger_DB['del_list'].update({'_id': 'cognac_del_list'}, {'$unset': {ip_address: 1}}, upsert=True)
@@ -609,8 +857,8 @@ def naming_cognac():
             for i in cognac:
                 if 'product_id' in i.keys():
                     if i['product_id'] == product_dict['id']:
-                        i['in_productData'] = True
-                        Merger_DB['Коньяк'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
+                        # i['in_productData'] = True
+                        Merger_DB['Коньяк'].update({'_id': i['_id']}, {'$set': {'in_productData': True}}, upsert=True)
 
             # saving data to files
             cognac = list(Merger_DB['Коньяк'].find())
@@ -922,6 +1170,252 @@ def naming_whiskey():
     return render_template('naming_whiskey.html', groups=show_group, undone=undone)
 
 
+@app.route('/grouping_beer/', methods=['GET', 'POST'])
+def grouping_beer():
+
+    ip_address = request.remote_addr.replace('.', '')
+
+    if request.method == 'GET':
+        Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+    search = ''
+    result_list = []
+
+    beer = list(Merger_DB['Пиво'].find())
+
+    skip_list = list(Merger_DB['skip_list'].find({'_id': 'beer_skip_list'}))
+    if skip_list:
+        skip_list = skip_list[0]['skip_list']
+
+    main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+    if main_drink:
+        main_drink = main_drink[0]
+    else:
+        if skip_list:
+
+            del skip_list[0]
+            main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+            if main_drink:
+                main_drink = main_drink[0]
+            Merger_DB['skip_list'].update({'_id': 'beer_skip_list'}, {'$set': {'skip_list': skip_list}}, upsert=True)
+
+    if "index" in request.form:
+        link = request.form['index']
+
+        link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+        if link_list:
+            link_list = link_list[0][ip_address]
+
+        if link in link_list:
+            link_list.remove(link)
+        else:
+            link_list.append(link)
+
+        Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$set': {ip_address: link_list}}, upsert=True)
+
+    if 'add_to_group' in request.form:
+        article = request.form['add_to_group']
+
+        link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+        if link_list:
+            link_list = link_list[0][ip_address]
+
+        if article in link_list:
+            link_list.remove(article)
+        else:
+            link_list.append(article)
+
+        Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$set': {ip_address: link_list}}, upsert=True)
+
+    if 'skip' in request.form:
+
+        Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+        skip_list = list(Merger_DB['skip_list'].find({'_id': 'beer_skip_list'}))
+        if skip_list:
+            skip_list = skip_list[0]['skip_list']
+
+        if not (request.form['skip'] in skip_list):
+            skip_list.append(request.form['skip'])
+
+        main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+        if main_drink:
+            main_drink = main_drink[0]
+        else:
+            if skip_list:
+                del skip_list[0]
+                main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+                if main_drink:
+                    main_drink = main_drink[0]
+
+        Merger_DB['skip_list'].update({'_id': 'beer_skip_list'}, {'$set': {'skip_list': skip_list}}, upsert=True)
+
+    if 'search' in request.form:
+        search = request.form['search']
+        result_list = [i for i in beer if search.lower() in i['name'].lower() and not (i is main_drink)]
+
+    if 'saving' in request.form:
+
+        link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+        if link_list:
+            link_list = link_list[0][ip_address]
+
+        match = [i for i in link_list if i.isdigit()]
+
+        if len(match) > 1:
+            flash('Ошибка: Вы можете добавить напиток только в одну группу')
+
+            Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+            return redirect('/grouping_beer')
+
+        elif len(match) == 1:
+
+            link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+            if link_list:
+                link_list = link_list[0][ip_address]
+
+            link_list.remove(match[0])
+            if main_drink:
+                link_list.append(main_drink['link'])
+
+            Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$set': {ip_address: link_list}}, upsert=True)
+
+            product_id = match[0]
+
+            link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+            if link_list:
+                link_list = link_list[0][ip_address]
+
+            for i in link_list:
+                drink = [k for k in beer if k['link'] == i][0]
+                ind = beer.index(drink)
+                drink['identified'] = True
+                drink['product_id'] = product_id
+                if not ('id' in beer[ind].keys()):
+                    drink['id'] = take_article()
+                Merger_DB['Пиво'].update({'_id': drink['_id']}, {'$set': drink}, upsert=True)
+
+            beer = list(Merger_DB['Пиво'].find())
+            main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+            if main_drink:
+                main_drink = main_drink[0]
+            else:
+                skip_list = list(Merger_DB['skip_list'].find({'_id': 'beer_skip_list'}))
+                if skip_list:
+                    skip_list = skip_list[0]['skip_list']
+
+                if skip_list:
+                    del skip_list[0]
+                    main_drink = [i for i in beer if
+                                  i['identified'] is False and not (i['link'] in skip_list)]
+                    if main_drink:
+                        main_drink = main_drink[0]
+
+                    Merger_DB['skip_list'].update({'_id': 'beer_skip_list'}, {'$set': {'skip_list': skip_list}}, upsert=True)
+
+            link_list = list(Merger_DB['link_list'].find({'$and': [{'_id': 'beer_link_list'}, {ip_address: {'$exists': True}}]}))
+            if link_list:
+                link_list = link_list[0][ip_address]
+
+            productData = list(Merger_DB['productData'].find({'section': 'Пиво'}))
+
+            item_in_PD = [i for i in productData if i['id'] == product_id]
+            if item_in_PD:
+                item_in_PD_index = productData.index(item_in_PD[0])
+                for i in link_list:
+                    item_in_PD[0]['links'].append(i)
+
+                Merger_DB['productData'].update({'_id': item_in_PD[0]['id']}, {'$set': item_in_PD[0]}, upsert=True)
+
+                beer = list(Merger_DB['Пиво'].find())
+
+                need_change = [i for i in beer if i['link'] in link_list]
+                for i in need_change:
+                    i['in_productData'] = True
+                    Merger_DB['Пиво'].update({'_id': i['_id']}, {'$set': i}, upsert=True)
+
+            Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+            beer = list(Merger_DB['Пиво'].find())
+            write_file('beer.json', beer)
+            productData = list(Merger_DB['productData'].find())
+            write_file('productData.json', productData)
+
+            return redirect('/beer_grouping_prove')
+        else:
+            if main_drink:
+
+                link_list.append(main_drink['link'])
+
+                product_id = take_article()
+
+                for i in link_list:
+                    drink = [k for k in beer if k['link'] == i][0]
+                    ind = beer.index(drink)
+                    drink['identified'] = True
+                    drink['product_id'] = product_id
+                    if not ('id' in beer[ind].keys()):
+                        drink['id'] = take_article()
+                    Merger_DB['Пиво'].update({'_id': drink['_id']}, {'$set': drink}, upsert=True)
+
+                Merger_DB['link_list'].update({'_id': 'beer_link_list'}, {'$unset': {ip_address: 1}}, upsert=True)
+
+                beer = list(Merger_DB['Пиво'].find())
+
+                main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+                if main_drink:
+                    main_drink = main_drink[0]
+                else:
+                    skip_list = list(Merger_DB['skip_list'].find({'_id': 'beer_skip_list'}))
+                    if skip_list:
+                        skip_list = skip_list[0]['skip_list']
+
+                    if skip_list:
+                        del skip_list[0]
+                        main_drink = [i for i in beer if i['identified'] is False and not (i['link'] in skip_list)]
+                        if main_drink:
+                            main_drink = main_drink[0]
+                        Merger_DB['skip_list'].update({'_id': 'beer_skip_list'}, {'$set': {'skip_list': skip_list}}, upsert=True)
+
+            # saving data to files
+            beer = list(Merger_DB['Пиво'].find())
+            write_file('beer.json', beer)
+
+            return redirect('/beer_grouping_prove')
+
+    group_id = numpy.unique([i['product_id'] for i in result_list if 'product_id' in i.keys()])
+    groups = list()
+    products_with_id = [i for i in beer if 'product_id' in i.keys()]
+    for i in group_id:
+        group = [k for k in products_with_id if k['product_id'] == i]
+        groups.append(group)
+        result_list = [i for i in result_list if not (i in group)]
+
+    # число несгруппированных напитков
+    undone = Merger_DB['Пиво'].count_documents({'identified': False})
+    # Номера групп в группировке
+    productData = list(Merger_DB['productData'].find({'section': 'Пиво'}))
+    new_nums = []
+    if groups:
+        # group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'product_id' in k[0].keys()])
+        group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
+        group_nums = list(group_nums)
+        if group_nums:
+            print(group_nums)
+            for i in group_nums:
+                new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
+            new_group = []
+            for i in groups:
+                if 'in_productData' in i[0].keys():
+                    new_group.append(i)
+            for i in groups:
+                if not (i in new_group):
+                    new_group.append(i)
+            groups = new_group
+
+    return render_template('grouping_beer.html', main_drink=main_drink, products=result_list, groups=groups, undone=undone, group_nums=new_nums)
+
+
 @app.route('/grouping_champagne/', methods=['GET', 'POST'])
 def grouping_champagne():
 
@@ -1153,6 +1647,7 @@ def grouping_champagne():
         group_nums = numpy.unique([k[0]['product_id'] for k in groups if 'in_productData' in k[0].keys()])
         group_nums = list(group_nums)
         if group_nums:
+            print(group_nums)
             for i in group_nums:
                 new_nums.append(productData.index([k for k in productData if k['id'] == i][0]) + 1)
             new_group = []
