@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Пиво
+Группировка Пиво
 {% endblock %}
 
 
@@ -99,9 +99,8 @@
               <p class="card-text">{{i["name"]}}</p><br>
               {% if 'features' in i.keys()%}
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
-              <p class="card-text">Тип - {{i['features']['Тип']}}</p>
               <p class="card-text">Цвет - {{i["features"]["Цвет"]}}</p>
-              <p class="card-text">Сахар - {{i["features"]["Сахар"]}}</p>
+              <p class="card-text">Фильтрация - {{i["features"]["Фильтрация"]}}</p>
               <p class="card-text">Крепость - {{i['features']['Крепость']}}</p>
               <p class="card-text">Бренд - {{i["features"]["Бренд"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
@@ -145,9 +144,8 @@
               <p class="card-text">{{i["name"]}}</p><br>
               {% if 'features' in i.keys()%}
               <p class="card-text">Объем - {{i["features"]["Объем"]}}</p>
-              <p class="card-text">Тип - {{i['features']['Тип']}}</p>
               <p class="card-text">Цвет - {{i["features"]["Цвет"]}}</p>
-              <p class="card-text">Сахар - {{i["features"]["Сахар"]}}</p>
+              <p class="card-text">Фильтрация - {{i["features"]["Фильтрация"]}}</p>
               <p class="card-text">Крепость - {{i['features']['Крепость']}}</p>
               <p class="card-text">Бренд - {{i["features"]["Бренд"]}}</p>
               <p class="card-text">Страна - {{i["features"]["Страна"]}}</p>
